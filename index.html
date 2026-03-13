@@ -5,385 +5,213 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>AutoHelper Premium</title>
-  <!-- Пакеты: React, Tailwind, Lucide Icons (через CDN) -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>AutoHelper FAIL-SAFE v5.0</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-    :root {
-      --bg-dark: #09090b;
-      --card-glass: rgba(18, 18, 23, 0.7);
-      --neon-blue: #0ea5e9;
-      --neon-gold: #f59e0b;
-    }
-
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-dark);
-      color: #ffffff;
-      -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
+      font-family: sans-serif;
+      background: #09090b;
+      color: white;
       margin: 0;
-      user-select: none;
+      padding-bottom: 80px;
     }
 
-    .glass-card {
-      background: var(--card-glass);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
+    .tab-content {
+      display: none;
+      padding: 20px;
+      animation: fadeIn 0.3s;
     }
 
-    .neon-ring-blue {
-      filter: drop-shadow(0 0 10px var(--neon-blue)) drop-shadow(0 0 20px rgba(14, 165, 233, 0.3));
+    .tab-content.active {
+      display: block;
     }
 
-    .neon-ring-gold {
-      filter: drop-shadow(0 0 10px var(--neon-gold)) drop-shadow(0 0 20px rgba(245, 158, 11, 0.3));
-    }
-
-    .gradient-blue {
-      background: linear-gradient(180deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0) 100%);
-    }
-
-    .gradient-gold {
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0) 100%);
-    }
-
-    .shadow-glow-blue {
-      box-shadow: 0 0 30px rgba(14, 165, 233, 0.15);
-    }
-
-    .shadow-glow-gold {
-      box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
-    }
-
-    .car-glow-base {
-      background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.2) 0%, rgba(14, 165, 233, 0) 70%);
-    }
-
-    @keyframes pulse-glow {
-
-      0%,
-      100% {
-        opacity: 0.5;
-        transform: scale(1);
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
       }
 
-      50% {
-        opacity: 0.8;
-        transform: scale(1.05);
+      to {
+        opacity: 1;
       }
     }
 
-    .animate-pulse-glow {
-      animation: pulse-glow 3s ease-in-out infinite;
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #333;
     }
 
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 10px;
+      text-transform: uppercase;
+      cursor: pointer;
     }
 
-    .nav-item-active {
+    .nav-btn.active {
       color: #0ea5e9;
-      transform: scale(1.1);
+      font-weight: bold;
     }
 
-    .nav-item-active i {
-      filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
+    .card {
+      background: #1a1a1e;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
     }
 
-    /* Transitions */
-    .fade-enter {
-      opacity: 0;
-      transform: translateY(10px);
+    .car-img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: contain;
+      margin: 10px 0;
     }
 
-    .fade-enter-active {
-      opacity: 1;
-      transform: translateY(0);
-      transition: all 0.4s ease-out;
+    .badge {
+      background: #0ea5e9;
+      color: black;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    #version-tag {
+      position: fixed;
+      top: 5px;
+      right: 5px;
+      font-size: 10px;
+      color: yellow;
+      background: black;
+      padding: 2px;
+      z-index: 1000;
     }
   </style>
 </head>
 
-<body class="safe-area-inset">
-  <div id="root"></div>
+<body>
+  <div id="version-tag">VERSION 5.0 (VANILLA)</div>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+  <header>
+    <div>
+      <h1 style="margin:0; font-size: 18px;">AUTO<span style="color:#0ea5e9">HELPER</span></h1>
+      <span style="font-size: 9px; opacity: 0.5;">FAIL-SAFE MODE ACTIVE</span>
+    </div>
+    <div style="width: 30px; height: 30px; background: #333; border-radius: 50%; text-align: center; line-height:30px;">
+      👤</div>
+  </header>
 
-    const MOCK_DATA = {
-      user: { username: "Driver", is_premium: true },
-      cars: [
-        { id: 1, brand: "Mercedes-Benz", model: "C-Class", year: 2023, mileage: 24100, vin: "WDD206..." },
-        { id: 2, brand: "BMW", model: "X5 M", year: 2022, mileage: 15400, vin: "WBA71..." }
-      ],
-      history: [
-        { date: "2024-06-10", liters: 45, cost: 108, mileage: 24100, type: "Заправка" },
-        { date: "2024-05-15", liters: 42, cost: 98, mileage: 23450, type: "Заправка" },
-        { date: "2024-04-20", liters: 0, cost: 450, mileage: 22800, type: "Замена масла" },
-        { date: "2024-04-02", liters: 50, cost: 115, mileage: 22800, type: "Заправка" }
-      ]
-    };
-
-    const BRAND_IMAGES = {
-      "mercedes": "https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-c-class-carcarvehicletransportmercedes-benz-9615246603058fvxm.png",
-      "bmw": "https://www.pngmart.com/files/10/BMW-M5-PNG-Transparent-Image.png",
-      "audi": "https://www.pngmart.com/files/4/Audi-PNG-Transparent-Image.png",
-      "default": "https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-c-class-carcarvehicletransportmercedes-benz-9615246603058fvxm.png"
-    };
-
-    // --- COMPONENTS ---
-
-    const Dashboard = ({ activeCar, history, getCarImage }) => (
-      <div className="w-full space-y-8 animate-fade">
-        <div className="text-center space-y-2 pt-4 relative">
-          <h2 className="text-2xl font-black tracking-tight text-white">{activeCar.brand} {activeCar.model}</h2>
-          <p className="text-slate-500 text-[10px] font-extrabold uppercase tracking-[0.3em] font-mono">{activeCar.vin}</p>
-          <div className="relative mt-2 h-56 flex items-center justify-center">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-32 rounded-[100%] car-glow-base animate-pulse-glow"></div>
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[280px] h-[280px] rounded-full border-4 border-sky-500/5 flex items-center justify-center">
-              <div className="w-[200px] h-36 rounded-[100%] border-2 border-sky-500/30 neon-ring-blue"></div>
-            </div>
-            <img src={getCarImage(activeCar.brand)} alt="Car" className="relative z-10 w-full object-contain drop-shadow-2xl animate-float" />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 px-5">
-          <div className="glass-card gradient-blue p-5 space-y-3 shadow-glow-blue border-sky-500/20">
-            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">FUEL & EFFICIENCY</p>
-            <div className="space-y-0 text-white">
-              <p className="text-2xl font-black">{activeCar.mileage.toLocaleString()} <span className="text-[10px] text-slate-500 font-bold">KM</span></p>
-              <p className="text-[10px] text-slate-400 font-bold">Avg: <span className="text-sky-400 text-xs">8.4 L</span></p>
-            </div>
-            <div className="pt-2 h-8">
-              <svg viewBox="0 0 100 20" className="w-full h-full stroke-sky-500 fill-sky-500/10 stroke-2">
-                <path d="M0 15 Q 10 5, 20 15 T 40 10 T 60 15 T 80 8 T 100 12" fill="none" />
-              </svg>
-            </div>
-          </div>
-          <div className="glass-card gradient-gold p-5 space-y-3 shadow-glow-gold border-amber-500/20">
-            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">SERVICE & HEALTH</p>
-            <div className="space-y-0.5">
-              <p className="text-[10px] text-slate-400 font-black uppercase">Next Service:</p>
-              <p className="text-lg font-black text-white leading-none">2,400 KM</p>
-            </div>
-            <div className="pt-2 space-y-1">
-              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full bg-amber-500 w-1/4 shadow-[0_0_10px_#f59e0b]"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="px-5 space-y-4 pb-4">
-          <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">RECENT LOGS</h2>
-          {history.slice(0, 3).map((item, idx) => (
-            <div key={idx} className="glass-card p-3 flex items-center gap-4 border-l-2 border-sky-500/50">
-              <div className="w-10 h-10 glass-card bg-white/5 flex flex-col items-center justify-center shrink-0 border-white/5">
-                <span className="text-[8px] font-bold text-slate-500 uppercase">{item.date.split('-')[1]}</span>
-                <span className="text-lg font-black text-white">{item.date.split('-')[2]}</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-xs font-extrabold text-white uppercase">{item.type}: {item.liters ? item.liters + 'L' : item.cost + ' BYN'}</p>
-              </div>
-              <p className="text-[10px] font-black text-slate-400">{item.mileage.toLocaleString()} km</p>
-            </div>
-          ))}
-        </div>
+  <!-- DASHBOARD -->
+  <div id="tab-dash" class="tab-content active">
+    <center>
+      <h2 id="active-car-name">Mercedes-Benz C-Class</h2>
+      <div id="car-image-container">
+        <img
+          src="https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-c-class-carcarvehicletransportmercedes-benz-9615246603058fvxm.png"
+          class="car-img">
       </div>
-    );
+    </center>
 
-    const Garage = ({ cars, getCarImage, setActiveCarIdx }) => (
-      <div className="w-full px-5 py-6 space-y-6 animate-fade">
-        <h2 className="text-xl font-black text-white uppercase tracking-tight">Ваш гараж</h2>
-        <div className="space-y-4">
-          {cars.map((car, idx) => (
-            <div key={idx} className="glass-card p-4 flex gap-4 border-l-4 border-sky-500" onClick={() => setActiveCarIdx(idx)}>
-              <div className="w-24 h-16 shrink-0 relative flex items-center justify-center">
-                <img src={getCarImage(car.brand)} className="w-full object-contain relative z-10" />
-                <div className="absolute inset-x-0 bottom-0 h-4 bg-sky-500/20 blur-md rounded-full"></div>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-black text-white uppercase leading-none">{car.brand} {car.model}</p>
-                <p className="text-[10px] text-slate-500 font-bold mt-1 uppercase">{car.year} • {car.mileage.toLocaleString()} KM</p>
-              </div>
-              <div className="flex flex-col justify-center">
-                <i data-lucide="chevron-right" className="w-5 h-5 text-slate-600"></i>
-              </div>
-            </div>
-          ))}
-          <div className="glass-card p-6 border-dashed border-2 border-slate-700 flex flex-col items-center justify-center gap-2 opacity-50">
-            <i data-lucide="plus" className="w-6 h-6 text-slate-500"></i>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Добавить авто через бота</p>
-          </div>
-        </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div class="card">
+        <small>ПРОБЕГ</small>
+        <div style="font-size: 20px; font-weight: 900;" id="active-car-mileage">24,100 км</div>
       </div>
-    );
-
-    const Service = () => (
-      <div className="w-full px-5 py-6 space-y-6 animate-fade">
-        <h2 className="text-xl font-black text-white uppercase tracking-tight">Полезные услуги</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {[
-            { title: "Замена масла", icon: "droplets", color: "blue" },
-            { title: "Диагностика", icon: "activity", color: "gold" },
-            { title: "Шиномонтаж", icon: "disc", color: "blue" },
-            { title: "Мойка / Детейлинг", icon: "sparkles", color: "gold" }
-          ].map((s, i) => (
-            <div key={i} className={`glass-card p-6 flex flex-col gap-4 text-center items-center shadow-glow-${s.color}`}>
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-${s.color}-500/10 text-${s.color === 'blue' ? 'sky-400' : 'amber-500'}`}>
-                <i data-lucide={s.icon} className="w-6 h-6"></i>
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-wider text-white">{s.title}</p>
-            </div>
-          ))}
-        </div>
-        <div className="glass-card p-5 bg-sky-500/5 border-sky-500/30">
-          <div className="flex items-center gap-3">
-            <i data-lucide="info" className="w-5 h-5 text-sky-400"></i>
-            <p className="text-xs font-bold text-slate-300">Ближайшее ТО через 2,400 км. Мы напомним вам!</p>
-          </div>
-        </div>
+      <div class="card">
+        <small>СЛЕД. ТО</small>
+        <div style="font-size: 20px; font-weight: 900;">2,400 км</div>
       </div>
-    );
+    </div>
 
-    const HistoryFull = ({ history }) => (
-      <div className="w-full px-5 py-6 space-y-6 animate-fade">
-        <h2 className="text-xl font-black text-white uppercase tracking-tight">История логов</h2>
-        <div className="space-y-4">
-          {history.map((item, idx) => (
-            <div key={idx} className="glass-card p-4 flex items-center gap-4">
-              <div className="w-12 h-12 glass-card bg-white/5 flex flex-col items-center justify-center shrink-0 border-white/5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase">{item.date.split('-')[1]}</span>
-                <span className="text-xl font-black text-white">{item.date.split('-')[2]}</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between">
-                  <p className="text-xs font-black text-white uppercase">{item.type}</p>
-                  <p className="text-xs font-black text-sky-400">{item.cost} BYN</p>
-                </div>
-                <p className="text-[9px] text-slate-500 font-bold mt-1 uppercase">Пробег: {item.mileage.toLocaleString()} KM {item.liters ? `• ${item.liters}L` : ''}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    <h3>Последние события</h3>
+    <div class="card">Заправка 45л - 10.06.2024</div>
+    <div class="card">Замена масла - 15.05.2024</div>
+  </div>
 
-    const App = () => {
-      const [loading, setLoading] = useState(true);
-      const [userData, setUserData] = useState(MOCK_DATA.user);
-      const [cars, setCars] = useState(MOCK_DATA.cars);
-      const [history, setHistory] = useState(MOCK_DATA.history);
-      const [activeCarIdx, setActiveCarIdx] = useState(0);
-      const [activeTab, setActiveTab] = useState('dashboard');
+  <!-- GARAGE -->
+  <div id="tab-cars" class="tab-content">
+    <h2>Мой Гараж</h2>
+    <div class="card"
+      onclick="selectCar('Mercedes-Benz', 'C-Class', '24,100', 'https://purepng.com/public/uploads/large/purepng.com-mercedes-benz-c-class-carcarvehicletransportmercedes-benz-9615246603058fvxm.png')">
+      <b>Mercedes-Benz C-Class</b><br>
+      <small>2023 • 24,100 км</small>
+    </div>
+    <div class="card"
+      onclick="selectCar('BMW', 'X5 M', '15,400', 'https://www.pngmart.com/files/10/BMW-M5-PNG-Transparent-Image.png')">
+      <b>BMW X5 M</b><br>
+      <small>2022 • 15,400 км</small>
+    </div>
+  </div>
 
-      useEffect(() => {
-        if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.ready();
-          window.Telegram.WebApp.expand();
-          window.Telegram.WebApp.headerColor = '#09090b';
-          const tgUser = window.Telegram.WebApp.initDataUnsafe?.user;
-          if (tgUser) setUserData(prev => ({ ...prev, username: tgUser.first_name || tgUser.username }));
-        }
-        const timer = setTimeout(() => {
-          setLoading(false);
-          setTimeout(() => lucide.createIcons(), 50);
-        }, 800);
-        return () => clearTimeout(timer);
-      }, []);
+  <!-- OTHERS (STUBS) -->
+  <div id="tab-service" class="tab-content">
+    <h2>Сервис</h2>
+    <p>Раздел в разработке...</p>
+  </div>
+  <div id="tab-logs" class="tab-content">
+    <h2>История</h2>
+    <p>История пуста...</p>
+  </div>
+  <div id="tab-settings" class="tab-content">
+    <h2>Настройки</h2>
+    <p>Настройки профиля...</p>
+  </div>
 
-      useEffect(() => {
-        setTimeout(() => lucide.createIcons(), 50);
-      }, [activeTab]);
+  <nav class="nav-bar">
+    <button class="nav-btn active" onclick="switchTab('dash', this)">DASH</button>
+    <button class="nav-btn" onclick="switchTab('cars', this)">CARS</button>
+    <button class="nav-btn" onclick="switchTab('service', this)">SHOP</button>
+    <button class="nav-btn" onclick="switchTab('logs', this)">LOGS</button>
+    <button class="nav-btn" onclick="switchTab('settings', this)">MORE</button>
+  </nav>
 
-      const getCarImage = (brand) => {
-        const b = (brand || "default").toLowerCase();
-        for (let key in BRAND_IMAGES) if (b.includes(key)) return BRAND_IMAGES[key];
-        return BRAND_IMAGES.default;
-      };
+  <script>
+    // ALERT TO VERIFY NEW VERSION
+    alert("AUTOHELPER V5.0: Если вы видите это сообщение, значит приложение загрузилось успешно!");
 
-      if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-[#09090b]">
-          <div className="w-12 h-12 border-4 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      );
+    function switchTab(tabId, btn) {
+      console.log("Switching to " + tabId);
+      // Прячем всё
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      // Показываем нужное
+      document.getElementById('tab-' + tabId).classList.add('active');
 
-      const renderContent = () => {
-        const car = cars[activeCarIdx] || MOCK_DATA.cars[0];
-        switch (activeTab) {
-          case 'dashboard': return <Dashboard activeCar={car} history={history} getCarImage={getCarImage} />;
-          case 'car': return <Garage cars={cars} getCarImage={getCarImage} setActiveCarIdx={(i) => { setActiveCarIdx(i); setActiveTab('dashboard'); }} />;
-          case 'services': return <Service />;
-          case 'history': return <HistoryFull history={history} />;
-          case 'settings': return <Service />;
-          default: return <Dashboard activeCar={car} history={history} getCarImage={getCarImage} />;
-        }
-      };
+      // Кнопки
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+    }
 
-      return (
-        <div className="min-h-screen pb-24 relative overflow-hidden flex flex-col items-center">
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-sky-500/10 rounded-full blur-[80px]"></div>
-          <div className="absolute top-1/2 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px]"></div>
+    function selectCar(brand, model, mileage, img) {
+      document.getElementById('active-car-name').innerText = brand + " " + model;
+      document.getElementById('active-car-mileage').innerText = mileage + " км";
+      document.getElementById('car-image-container').innerHTML = '<img src="' + img + '" class="car-img">';
 
-          <nav className="w-full px-6 py-4 flex justify-between items-center z-50 sticky top-0 bg-[#09090b]/80 backdrop-blur-md">
-            <div className="w-10 h-10 glass-card flex items-center justify-center text-sky-400">
-              <i data-lucide="zap" className="w-5 h-5"></i>
-            </div>
-            <h1 className="text-xl font-extrabold tracking-widest text-white uppercase italic">
-              AUTO<span className="text-sky-500">HELPER</span>
-            </h1>
-            <div className="w-10 h-10 glass-card flex items-center justify-center text-slate-400">
-              <span className="text-[10px] font-bold uppercase">{userData.username[0]}</span>
-            </div>
-          </nav>
+      // Возврат на Dash
+      switchTab('dash', document.querySelector('.nav-btn:first-child'));
+    }
 
-          {renderContent()}
-
-          <div className="fixed bottom-0 left-0 right-0 p-4 pb-8 z-[100] bg-gradient-to-t from-[#09090b] via-[#09090b]/80 to-transparent">
-            <div className="max-w-md mx-auto glass-card bg-black/60 backdrop-blur-3xl border-white/5 rounded-[32px] p-2 flex justify-between items-center shadow-2xl">
-              {[
-                { id: 'dashboard', icon: 'zap', label: 'Dash' },
-                { id: 'car', icon: 'car', label: 'Garage' },
-                { id: 'services', icon: 'wrench', label: 'Service' },
-                { id: 'history', icon: 'history', label: 'Logs' },
-                { id: 'settings', icon: 'settings', label: 'More' }
-              ].map((tab) => (
-                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                  className={`flex flex-col items-center gap-1 flex-1 py-1 transition-all ${activeTab === tab.id ? 'nav-item-active' : 'text-slate-500 opacity-60'}`}>
-                  <i data-lucide={tab.icon} className={`w-${activeTab === tab.id ? '6' : '5'} h-${activeTab === tab.id ? '6' : '5'}`}></i>
-                  <span className="text-[8px] font-black uppercase tracking-tighter">{tab.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    // Telegram WebApp Setup
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
   </script>
 </body>
 
