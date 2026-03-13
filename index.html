@@ -331,13 +331,14 @@
       );
 
       const renderContent = () => {
+        const car = cars[activeCarIdx] || MOCK_DATA.cars[0];
         switch (activeTab) {
-          case 'dashboard': return <Dashboard activeCar={cars[activeCarIdx]} history={history} getCarImage={getCarImage} />;
+          case 'dashboard': return <Dashboard activeCar={car} history={history} getCarImage={getCarImage} />;
           case 'car': return <Garage cars={cars} getCarImage={getCarImage} setActiveCarIdx={(i) => { setActiveCarIdx(i); setActiveTab('dashboard'); }} />;
           case 'services': return <Service />;
           case 'history': return <HistoryFull history={history} />;
-          case 'settings': return <Service />; // Пока переиспользуем для примера
-          default: return <Dashboard activeCar={cars[activeCarIdx]} history={history} getCarImage={getCarImage} />;
+          case 'settings': return <Service />;
+          default: return <Dashboard activeCar={car} history={history} getCarImage={getCarImage} />;
         }
       };
 
